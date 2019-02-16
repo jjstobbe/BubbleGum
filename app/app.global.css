@@ -4,11 +4,14 @@
  */
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
+/* Good Color - #36CFDF */
+
 body {
+  margin: 0;
   position: relative;
   color: white;
   height: 100vh;
-  background-color:#373737;
+  background-color:#16151A;
   font-family: Arial, Helvetica, Helvetica Neue, serif;
   overflow-y: hidden;
 }

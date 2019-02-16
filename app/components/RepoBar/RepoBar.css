@@ -1,0 +1,8 @@
+.repoBarContainer {
+  width: 100vw;
+  height: 50px;
+  left: 0;
+  background-color: #25242A;
+  padding: 10px;
+  font-size: 18px;
+}

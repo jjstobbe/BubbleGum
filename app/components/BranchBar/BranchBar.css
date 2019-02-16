@@ -1,0 +1,54 @@
+.branchBarContainer {
+  display: inline-block;
+  padding: 10px;
+  height: 100vh;
+  background-color: #25242A;
+}
+
+.remotesContainer {
+  height: 100%;
+}
+
+.branchBarContainer h3 {
+  padding: 2px, 5px;
+  margin: 0;
+  border-bottom: 1px solid #161616;
+}
+
+ul.branchesContainer {
+  color: #dfdfdf;
+  padding-left: 5px;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.branchesContainer li {
+  cursor: pointer;
+  list-style-type: none;
+  font-size: 14px;
+  padding: 3px;
+  transition: 0.2s ease;
+}
+
+.branchesContainer li:hover {
+  background-color: #131313;
+  transition: 0.2s ease;
+}
+
+.branchBarContainer > div > div {
+  background-color: #1A1A1C;
+  color: white;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.branchBarContainer input {
+  background-color: #1A1A1C;
+  color: white;
+  border: none;
+  border-color: transparent;
+  outline: none;
+  display: block;
+  padding: 10px;
+  border-radius: 20px;
+}
