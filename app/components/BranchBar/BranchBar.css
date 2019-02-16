@@ -10,6 +10,7 @@
 }
 
 .branchBarContainer h3 {
+  cursor: pointer;
   padding: 2px, 5px;
   margin: 0;
   border-bottom: 1px solid #161616;
@@ -20,6 +21,7 @@ ul.branchesContainer {
   padding-left: 5px;
   overflow-y: scroll;
   height: 100%;
+  width: 350px;
 }
 
 .branchesContainer li {
@@ -27,6 +29,9 @@ ul.branchesContainer {
   list-style-type: none;
   font-size: 14px;
   padding: 3px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
   transition: 0.2s ease;
 }
 
@@ -43,6 +48,7 @@ ul.branchesContainer {
 }
 
 .branchBarContainer input {
+  width: 90%;
   background-color: #1A1A1C;
   color: white;
   border: none;

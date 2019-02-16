@@ -17,13 +17,6 @@ export default class BranchBar extends Component<Props> {
     this.props.getAllBranches && this.props.getAllBranches()
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.searchingRemotes && this.state.searchingRemotes) {
-      console.log(this.state.branchesInputRef);
-      // this.state.remotesInputRef.focus();
-    }
-  }
-
   sortBranches = (a, b) => {
     return (a.display).localeCompare(b.display)
   }
@@ -39,17 +32,22 @@ export default class BranchBar extends Component<Props> {
     })
   }
 
+  doubleClickBranch = (e) => {
+    this.props.changeToLocalBranch && this.props.changeToLocalBranch(e.target.textContent.trim());
+  }
+  doubleClickRemote = (e) => {
+    this.props.changeToRemoteBranch && this.props.changeToRemoteBranch(e.target.textContent.trim());
+  }
+
   clickBranches = () => { this.setState({ searchingBranches: true }) }
   clickRemotes = () => { this.setState({ searchingRemotes: true }) }
   blurBranches = () => { this.setState({ searchingBranches: false }) }
-  blurRemotes = () => { this.setState({ searchingRemotes: true }) }
+  blurRemotes = () => { this.setState({ searchingRemotes: false }) }
 
   render() {
     const {
       branchDict,
       remoteDict,
-      changeToLocalBranch,
-      changeToRemoteBranch,
     } = this.props;
 
     const {
@@ -94,7 +92,7 @@ export default class BranchBar extends Component<Props> {
             <h3 onClick={this.clickBranches}> Branches </h3>
           }
           <ul className={styles.branchesContainer}>
-            { branches.map(branch => <li onDoubleClick={changeToLocalBranch}> { branch.display }</li>)}
+            { branches.map(branch => <li onDoubleClick={this.doubleClickBranch}> { branch.display }</li>)}
           </ul>
         </div>
 
@@ -111,7 +109,7 @@ export default class BranchBar extends Component<Props> {
             <h3 onClick={this.clickRemotes}> Remotes </h3>
           }
           <ul className={styles.branchesContainer}>
-            { remotes.map(remote => <li onDoubleClick={changeToRemoteBranch}> { remote.display }</li>)}
+            { remotes.map(remote => <li onDoubleClick={this.doubleClickRemote}> { remote.display }</li>)}
           </ul>
         </div>
       </div>

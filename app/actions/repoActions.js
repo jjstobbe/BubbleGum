@@ -22,11 +22,9 @@ export const changeToLocalBranch = (target) => {
   }
 }
 
-export const changeToRemoteBranch = (target) => {
+export const changeToRemoteBranch = (branchName) => {
   return async (dispatch, getState) => {
-    const state = getState()
-
-    console.log(state);
+    await repoService.changeToRemoteBranch(branchName);
 
     // await repoService.stashLocalChanges
   }
