@@ -88,7 +88,7 @@ export default class BranchBar extends Component<Props> {
                 value={branchesQuery}
                 onChange={this.searchBranches}
                 onBlur={this.blurBranches} />
-              </div> :
+            </div> :
             <h3 onClick={this.clickBranches}> Branches </h3>
           }
           <ul className={styles.branchesContainer}>

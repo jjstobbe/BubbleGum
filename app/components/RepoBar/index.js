@@ -13,14 +13,13 @@ export default class RepoBar extends Component<Props> {
   }
 
   render() {
-    console.log("REPO BAR- ", this.props);
-    const { repos } = this.props
+    const { repos } = this.props;
 
     return (
       <div className={styles.repoBarContainer} >
-        { repos && repos.map(repo => <RepoTab repo={repo} />) }
+        { repos && repos.map((repo, index) => <RepoTab key={index} repo={repo} {...this.props} />) }
 
-        <div onClick={this.importRepoDialog}>
+        <div className={styles.importRepoContainer} onClick={this.importRepoDialog}>
           +
         </div>
       </div>

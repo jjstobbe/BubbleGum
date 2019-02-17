@@ -1,18 +1,34 @@
 import { ipcMain, dialog } from 'electron';
 import NodeGit from 'nodegit';
-var Repo = null;
+import { refreshBranches } from '../actions/branchActions';
+var repo = null;
 
 export const openRepo = async (workingDir) => {
-  Repo = await NodeGit.Repository.open(workingDir)
+  repo = await NodeGit.Repository.open(workingDir)
 
   let paths = workingDir.split(require('path').sep);
   let repoName = paths[paths.length - 1];
 
-  console.log(repoName);
+  return { repo: repo, repoName: repoName };
+}
+
+export const repoFetch = async () => {
+  const remotes = await getCurrentRemotes();
+
+  await repo.fetch(remotes[0], {
+    callbacks: {
+      credentials: (url, username) => {
+        // TODO: Don't commit these, store them somewhere (in cache or something)
+        return NodeGit.Cred.userpassPlaintextNew('<username>', '<password>');
+      },
+      certificateCheck: () => 1
+    }
+  });
 }
 
 export const getAllBranches = async () => {
-  return Repo.getReferences(NodeGit.Reference.TYPE.LISTALL).then(refs => {
+
+  return repo.getReferences(NodeGit.Reference.TYPE.LISTALL).then(refs => {
       refs = refs.filter(_ => _.shorthand() !== 'stash');
 
       const branchRefs = refs.filter(_ => _.isBranch())
@@ -53,18 +69,40 @@ export const getAllBranches = async () => {
 }
 
 export const changeToRemoteBranch = async (branchName) => {
-  console.log(branchName);
-  const ref = await Repo.getReference(`refs/remotes/origin/${branchName}`)
+  const ref = await repo.getReference(`refs/remotes/origin/${branchName}`)
   const target = ref.target();
-  let localRef = await Repo.createBranch(branchName, target, true);
+  let localRef = await repo.createBranch(branchName, target, true);
   localRef = await NodeGit.Branch.setUpstream(localRef, branchName);
-  Repo.checkoutBranch(localRef);
+  repo.checkoutBranch(localRef);
+}
+
+export const getCurrentRemotes = async () => {
+  const strs = await repo.getRemotes()
+  let requests = [];
+
+  strs.forEach(r => {
+    requests.push(repo.getRemote(r));
+  });
+
+  return Promise.all(requests);
+}
+
+export const setCurrentRepo = async (repoToSet) => {
+  repo = repoToSet;
+}
+
+export const getStatus = async () => {
+  const statuses = await repo.getStatus();
+  console.log(statuses);
 }
 
 const repoService = {
   openRepo,
   getAllBranches,
   changeToRemoteBranch,
+  setCurrentRepo,
+  repoFetch,
+  getStatus,
 }
 
 export default repoService;

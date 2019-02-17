@@ -6,6 +6,7 @@ import * as repoActions from '../actions/repoActions';
 function mapStateToProps(state) {
   return {
     repos: state.repo.repos,
+    selectedRepo: state.repo.selectedRepo
   };
 }
 

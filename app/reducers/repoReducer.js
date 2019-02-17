@@ -1,14 +1,46 @@
-import { FETCH_REMOTES, IMPORT_REPO } from '../actions/repoActions';
+import { ADD_REPO, FETCH_REMOTES, SET_CURRENT_REPO, REMOVE_REPO } from '../actions/repoActions';
 
-export default function repo(state = 0, action) {
+export default function repo(state = {}, action) {
   switch (action.type) {
-    case FETCH_REMOTES:
-      return {
-        branchDict: action.branchDictionaries.branchDict,
-        remoteDict: action.branchDictionaries.remoteDict
+    case ADD_REPO:
+      let repos = state.repos || [];
+      if (!action.repo || !action.repoName) {
+        return state;
+      }
+
+      const newRepo = {
+        repoName: action.repoName,
+        repoObject: action.repo,
       };
-    case IMPORT_REPO:
-      return state - 1;
+
+      return {
+        ...state,
+        repos: [ ...repos, newRepo ],
+        selectedRepo: newRepo
+      }
+    case SET_CURRENT_REPO:
+      console.log("SETTING REPO TO = ", action.repoName)
+      if (!state.repos || !action.repoName) {
+        return state;
+      }
+
+      const repoToSelect = state.repos.find((repo) => repo.repoName == action.repoName)
+
+      return {
+        ...state,
+        selectedRepo: repoToSelect,
+      }
+    case REMOVE_REPO:
+      if (!state.repos || !action.repoName) {
+        return state;
+      }
+
+      const reposToKeep = state.repos.filter(repo => repo.repoName !== action.repoName);
+
+      return {
+        ...state,
+        repos: reposToKeep
+      }
     default:
       return state;
   }

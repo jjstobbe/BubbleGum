@@ -1,0 +1,27 @@
+.repoTab {
+  display: inline-block;
+  cursor: pointer;
+  line-height: 60px;
+  padding: 0 20px;
+  border-right: 1px solid #16151A;
+  transition: 0.1s ease;
+}
+
+.selected {
+  background-color: rgb(28, 27, 31);
+  color:#36CFDF;
+}
+
+.repoTab:hover {
+  background-color: rgb(28, 27, 31);
+}
+
+.closeRepoButton {
+  color: #DFDFDF;
+  width: 10px;
+  height: 10px;
+  padding: 5px 8px;
+  margin-left: 10px;
+  border-radius: 20px;
+  background-color: rgb(28, 27, 31);
+}
