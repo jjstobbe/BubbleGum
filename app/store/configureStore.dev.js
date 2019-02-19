@@ -6,6 +6,9 @@ import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as repoActions from '../actions/repoActions';
 
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
 const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
@@ -52,8 +55,15 @@ const configureStore = (initialState?) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
 
+  const persistConfig = {
+    key: 'root',
+    storage,
+  }
+
+  const persistedReducer = persistReducer(persistConfig, rootReducer)
+
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(persistedReducer, enhancer);
 
   if (module.hot) {
     module.hot.accept(
@@ -62,6 +72,10 @@ const configureStore = (initialState?) => {
       () => store.replaceReducer(require('../reducers').default)
     );
   }
+
+  const persistor = persistStor(store);
+
+  return { store, persistor }
 
   return store;
 };

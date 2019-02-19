@@ -87,13 +87,31 @@ export const getCurrentRemotes = async () => {
   return Promise.all(requests);
 }
 
-export const setCurrentRepo = async (repoToSet) => {
+export const setCurrentRepo = (repoToSet) => {
   repo = repoToSet;
 }
 
 export const getStatus = async () => {
-  const statuses = await repo.getStatus();
-  console.log(statuses);
+  const recentCommit = await repo.getHeadCommit()
+  const tree = await recentCommit.getTree()
+
+  const diff = await NodeGit.Diff.treeToWorkdir(repo, tree);
+
+  const patches = await diff.patches();
+
+  const stats = await patches[0].lineStats()
+  console.log(stats);
+
+  const hunks = await patches[0].hunks();
+
+  const lines = await hunks[0].lines();
+
+  const content = lines.map(line => { return { content: line.content(), op: line.origin() } })
+
+  console.log(content);
+
+  // const statuses = await repo.getStatus();
+  // console.log(statuses);
 }
 
 const repoService = {

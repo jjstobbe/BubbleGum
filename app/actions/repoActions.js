@@ -25,7 +25,7 @@ export const addRepo = (repo, repoName) => {
 
 export const setCurrentRepo = (repo) => {
   return async (dispatch, getState) => {
-    await repoService.setCurrentRepo(repo.repoObject);
+    repoService.setCurrentRepo(repo.repoObject);
 
     dispatch({
       type: SET_CURRENT_REPO,
